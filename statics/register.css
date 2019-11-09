@@ -1,0 +1,59 @@
+*{
+    width: 100%;
+    margin: 0px auto;
+    padding: 0px auto;
+}
+body{
+    width: 100%;
+}
+.login{
+    margin-top: 6%;
+    width: 600px;
+    height: 500px;
+    border: 1px solid black;
+    text-align: center
+}
+.login_mar{
+    width: 400px;
+    height: 360px;
+    margin-top: 50px;
+    padding-top: 50px;
+    border: 1px solid red;
+    text-align: center;
+}
+.middle{
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+}
+.left{
+    margin-top:12px;
+    width: 30%;
+    float: left;
+}
+.right{
+    width: 70%;
+    float: right;
+}
+.login_mar select{
+    width: 250px;
+    height: 25px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.login_mar input{
+    width: 250px;
+    height: 25px;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+a{
+    color: #999999;
+    text-decoration: none;
+}
+a:hover{
+    color: red;
+}
+.register{
+    margin-top:10px;
+}

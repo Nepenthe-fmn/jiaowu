@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/statics/register.css">
+    <title>register</title>
+</head>
+<body>
+    <div class="login">
+        <div class="login_mar">
+                <form action="/register/" method="POST">
+                    <div class="middle">
+                        <p> <div class="left">选择角色</div>
+                            <div class="right"><select name="versions" size="1" placeholder="请选择版本">
+                            <option value="1">学生</option>
+                            <option value="0">教师</option>
+                        </select></div></p>
+                    </div>
+                    <div class="middle">
+                        <p> <div class="left">用户ID</div>
+                            <div class="right"><input type="text" name="userid" placeholder="请输入用户ID"></div></p>
+                    </div>
+                    <div class="middle">
+                        <p> <div class="left">用户名</div>
+                            <div class="right"><input type="text" name="username" placeholder="请输入您的用户名"></div></p>
+                    </div>
+                    <div class="middle">
+                        <p> <div class="left">密码</div>
+                            <div class="right"><input type="password" name="password" placeholder="请输入密码"></div></p>
+                    </div>
+                    <div class="middle">
+                        <p> <div class="left">确认密码</div>
+                            <div class="right"><input type="password" name="password_answer" placeholder="请确认密码"></div></p>
+                    </div>
+                    <p><input type="submit" value="立即注册"></p>
+                    <div class="register"><p><a href="/login/">已有账户，去登陆</a></p></div>
+                </form>
+        </div>
+    </div>
+</body>
+</html>

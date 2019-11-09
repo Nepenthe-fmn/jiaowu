@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="/statics/jquery-3.1.1.min.js"></script>
+    <script src="/statics/jquery.cookie.js"></script>
+    <link rel="stylesheet" href="/statics/index.css"> {#/路径要用斜杠#}
+    <title>Title</title>
+</head>
+<body>
+    <div class="top">
+        <div class="login">
+            <div class="login_message">
+                <a href="/login/">登录</a><a href="/register/">注册</a>
+            </div>
+            <img src="#" />
+        </div>
+    </div>
+    <div class="content">
+        <div class="left">
+            <ul>
+                <li><a href="/classes/">班级管理</a></li>
+                <li><a href="/students/">学生管理</a></li>
+                <li><a href="/teachers/">教师管理</a></li>
+            </ul>
+        </div>
+        <div class="right">
+            {% block right %}
+                <h1>欢迎{{ username }}登录教务系统后台管理</h1>
+            {% endblock %}
+        </div>
+    </div>
+
+</body>
+    {% block  js %}
+    {% endblock %}
+</html>
