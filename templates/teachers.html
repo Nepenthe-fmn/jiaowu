@@ -1,16 +1,27 @@
 {% extends "index.html" %}
 {% block right %}
 {#    {{  block.super }}#}
+    <h1 style="margin-left:10%;">教师管理</h1>
+    <div class="message" style="margin-left:10%;">
+        <a href="/teacher_add/">添加</a>
+    </div>
     <table border="1">
-        <tr>
-            <th>教师编号</th>
-            <th>教师姓名</th>
-            <th>操作</th>
-        </tr>
-        <tr>
-            <td>1001</td>
-            <td>软件一班</td>
-            <td>编辑 | 删除</td>
-        </tr>
+        <tbody>
+            {% for foo in teacher_list.values %}
+                <tr>
+                    <td>{{ foo.nid }}</td>
+                    <td>{{ foo.name }}</td>
+                    <td>
+                        {% for cls in foo.cls_list %}
+                            <span nid="{{ cls.id }}">{{ cls.classname }}</span>
+                        {% endfor %}
+                    </td>
+                    <td><a href="/edit_teacher-{{ foo.nid }}/">编辑</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
+    <div class="Pages">
+        {{ pages }}
+    </div>
 {% endblock %}

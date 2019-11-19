@@ -9,3 +9,17 @@ class UserInfo(models.Model):
 class classes(models.Model):
     classid=models.CharField(max_length=64)
     classname=models.CharField(max_length=64)
+class student(models.Model):
+    studentname=models.CharField(max_length=64)
+    email=models.CharField(max_length=64,null=True)
+    cls = models.ForeignKey('Classes',on_delete=models.CASCADE)
+class teacher(models.Model):
+    teachername=models.CharField(max_length=64)
+    cls = models.ManyToManyField('Classes')
+
+
+
+
+
+
+

@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+{% block right %}
+    <h1 style="margin-left:10%;">添加老师</h1>
+    <form action="/teacher_add/" method="post">
+        <p>老师名称：<input type="text" name="teacher"></p>
+        <p>班级：
+            <select name="cls" multiple>
+                {% for foo in cls_list %}
+                    <option value="{{ foo.id }}">{{ foo.classname }}</option>
+                {% endfor %}
+            </select>
+        </p>
+        <input type="submit" value="提交">
+    </form>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

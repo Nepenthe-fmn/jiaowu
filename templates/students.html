@@ -1,16 +1,158 @@
 {% extends "index.html" %}
 {% block right %}
-{#    {{  block.super }}#}
+{#{{  block.super }} #}
+    <h1 style="margin-left:10%;">学生管理</h1>
+    <div class="message" style="margin-left:10%;">
+        <input id="message_submit" type="submit" value="添加" />
+    </div>
     <table border="1">
-        <tr>
-            <th>学生学号</th>
-            <th>学生姓名</th>
-            <th>操作</th>
-        </tr>
-        <tr>
-            <td>1712</td>
-            <td>软件一班</td>
-            <td>编辑 | 删除</td>
-        </tr>
+        <thead>
+            <tr>
+                <th>学生学号</th>
+                <th>学生姓名</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in class_mesage %}
+                <tr>
+                    <td cla="id">{{ i.classid }}</td>
+                    <td cla="classname">{{ i.classname }}</td>
+                    <td><a class="compile">编辑</a> | <a class="delete_top">删除</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
     </table>
+    <div class="Pages">
+        {{ pages }}
+    </div>
+
+{#模板层#}
+    <div class="pop">
+        <input type="text" name="pop_classid" placeholder="请输入班级编号" />
+        <input type="text" name="pop_classname" placeholder="请输入班级名" />
+        <input type="button" id="ajax_button" value="添加">
+        <input type="button" id="ajax_update" value="修改">
+        <input type="button" id="last_story" value="取消" />
+    </div>
+{#遮罩层#}
+    <div class="shade" ></div>
+{#删除层#}
+    <div class="delete">
+        <h3 style="margin-top:30%;">是否确认删除此条数据</h3>
+        <input id="answer" type="button" value="确定" />
+        <input id="delete_story" type="button" value="取消" />
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(function(){
+            bindDeleteEvent();
+            bindPopSendEvent();
+        });
+        {# 删：删除数据 #}
+        function bindDeleteEvent(){
+            $(".shade").hide();
+            $(".delete").hide();
+            $(".delete_top").click(function(){
+                $(".shade").show();
+                $(".delete").show();
+            });
+            $("#delete_story").click(function(){
+                $(".shade").hide();
+                $(".delete").hide();
+            });
+            $("tbody").on("click",".delete_top",function(){
+                var tds=$(this).parent().prevAll();
+                $('.pop input[name="pop_classid"]').val(tds[1].innerText);
+                $('.pop input[name="pop_classname"]').val(tds[0].innerText);
+                {#console.log(tds);#}
+            });
+            $("tbody").on("click",".compile",function(){
+                var tds=$(this).parent().prevAll();
+                $('.pop input[name="pop_classid"]').val(tds[1].innerText);
+                $('.pop input[name="pop_classname"]').val(tds[0].innerText);
+                $(".pop").show();
+                $(".shade").show();
+                $("#last_story").click(function(){
+                    $(".pop").hide();
+                    $(".shade").hide();
+                });
+            });
+            $("#answer").click(function(){
+                var id=$('.pop input[name="pop_classid"]').val();
+                var classname=$('.pop input[name="pop_classname"]').val();
+                console.log(classname);
+                console.log(id);
+                $.ajax({
+                    url: "/classes/",
+                    data: {classname:classname,id:id},
+                    type:"POST",
+                    headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+                    dataType: "json",
+                    success:function(del_dict){
+                        if(!del_dict.status){
+                            alert(del_dict.error);
+                        }else if(del_dict.status){
+                            alert(del_dict.success);
+                            location.reload();
+                        }
+                    }
+                });
+            });
+            $("#ajax_update").click(function(){
+                var second_id=$('.pop input[name="pop_classid"]').val();
+                var second_classname=$('.pop input[name="pop_classname"]').val();
+                $.ajax({
+                    url:"/classes/",
+                    data:{second_id:second_id,second_classname:second_classname},
+                    type:"POST",
+                    headers: {'Content-Type' : 'application/x-www-form-urlencoded'},
+                    dataType: "json",
+                    success:function(update_dict){
+                        if(!update_dict.status){
+                            alert(update_dict.error);
+                        }else if(update_dict.status){
+                            alert(update_dict.success);
+                            location.reload();
+                        }
+                    },
+                })
+            });
+
+        };
+        {# 增：数据传输ajax #}
+        function bindPopSendEvent(){
+            $(".pop").hide();
+            $("#message_submit").click(function(){
+                $(".pop").show();
+                $(".shade").show();
+            });
+            $("#last_story").click(function(){
+                $(".pop").hide();
+                $(".shade").hide();
+            });
+            $("#ajax_button").click(function(){
+                var popClassid = $('.pop input[name="pop_classid"]').val();
+                var popClassname = $('.pop input[name="pop_classname"]').val();
+                $.ajax({
+                    url:"/classes/",
+                    data:{pop_classid:popClassid,pop_classname:popClassname},
+                    type:"post",
+                    headers : {
+                        'Content-Type' : 'application/x-www-form-urlencoded'
+                    },
+                    dataType:"json", {#解析数据类型为json#}
+                    success:function(pop_dict){
+                        if(!pop_dict.status){
+                            alert(pop_dict.error);
+                        }else if(pop_dict.status){
+                            alert(pop_dict.success);
+                            location.reload();
+                        }
+                    },
+                });
+            });
+        }
+    </script>
 {% endblock %}
