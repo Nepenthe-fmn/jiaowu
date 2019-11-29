@@ -1,5 +1,4 @@
 from django.db import models
-models.CharField()
 # Create your models here.
 class UserInfo(models.Model):
     userid=models.CharField(max_length=64)
@@ -9,6 +8,9 @@ class UserInfo(models.Model):
 class classes(models.Model):
     classid=models.CharField(max_length=64)
     classname=models.CharField(max_length=64)
+class imagesurl(models.Model):
+    filter = models.CharField(max_length=64)
+    path = models.CharField(max_length=64)
 class student(models.Model):
     studentname=models.CharField(max_length=64)
     email=models.CharField(max_length=64,null=True)

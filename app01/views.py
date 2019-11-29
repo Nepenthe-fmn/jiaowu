@@ -5,7 +5,6 @@ import json
 # 首页
 def index(req):
     username=req.session.get("username")
-    print(username)
     if username:
         return render(req,"index.html",{"username":username})
     else:
@@ -42,7 +41,6 @@ def register(req):
             password=password,
             password_answer=password_answer,
         )
-        print(versions,userid,username,password,password_answer)
     return render(req,"register.html")
 #班级管理
 from django.utils.safestring import mark_safe
@@ -69,9 +67,6 @@ def classes(req):
         del_id = req.POST.get("id",None)
         update_classname = req.POST.get("second_classname",None)
         update_id = req.POST.get("second_id",None)
-        print(update_classname,update_id)
-        # pop_del = req.POST.get("del",None)
-        # print(pop_classid,pop_clasname,pop_del)
         if pop_classid and pop_clasname:
             models.classes.objects.create(classid=pop_classid,classname=pop_clasname)
             pop_dict["success"] = "添加成功"
@@ -79,8 +74,7 @@ def classes(req):
             models.classes.objects.filter(classid=del_id,classname=del_classname).delete()
             del_dict["success"] = "删除成功"
         elif update_classname and update_id:
-            cbv=models.classes.objects.filter(classid=update_id).update(classname=update_classname)
-            print("cbv:",cbv)
+            models.classes.objects.filter(classid=update_id).update(classname=update_classname)
             update_dict["success"] = "更新成功"
         else:
             pop_dict["status"] = False
@@ -118,9 +112,6 @@ def students(req):
         del_id = req.POST.get("id",None)
         update_classname = req.POST.get("second_classname",None)
         update_id = req.POST.get("second_id",None)
-        print(update_classname,update_id)
-        # pop_del = req.POST.get("del",None)
-        # print(pop_classid,pop_clasname,pop_del)
         if pop_classid and pop_clasname:
             models.classes.objects.create(classid=pop_classid,classname=pop_clasname)
             pop_dict["success"] = "添加成功"
@@ -159,8 +150,6 @@ class PagesHelp:
         start = (self.num_pages - 1) * self.piece_one
         end = self.num_pages * self.piece_one
         class_mesage = models.classes.objects.all()[start:end]
-        # print(start, end, self.pieces)
-        # print(class_mesage)
         return class_mesage
     def teacher_messgae(self):
         start = (self.num_pages - 1) * self.piece_one
@@ -244,9 +233,8 @@ def edit_teacher(request,nid):
         obj = models.teacher.objects.get(id=nid)
         #获取当前老师已经管理的所有班级
         obj_list=obj.cls.all().values_list("classid","classname")#元组
-        print(obj_list)
         #已经管理的班级的ID列表
-        id_list = list(zip(*obj_list))[0]
+        id_list = list(zip(*obj_list))[0] if obj_list else [] #三元运算
         #获取不包括已经管理的班级
         cls_list=models.classes.objects.exclude(classid__in=id_list)
         return render(request,"edit_teacher.html",{"obj":obj,"cls_list":cls_list,"obj_list":obj_list})
@@ -258,6 +246,64 @@ def edit_teacher(request,nid):
         obj.save()#单条数据添加
         obj.cls.set(cls_list)#课程添加
         return redirect("/teachers/")
+#文件上传（Form表单）
+def upload(request):
+    if request.method == "GET":
+        img_list = models.imagesurl.objects.all()
+        return render(request,"upload.html",{"img_list":img_list})
+    elif request.method == "POST":
+        username = request.POST.get("username",None)
+        #filesname = request.POST.get("files")
+        file = request.FILES.get("files")
+        import os
+        path = os.path.join('statics', 'upload', file.name)
+        f = open(path,'wb')
+        for chunk in file.chunks():
+            f.write(chunk)
+        f.close()
+        models.imagesurl.objects.create(filter=username,path=path)
+        return redirect("/upload/")
+#文件上传（FormData）
+def uploadformdata(request):
+    if request.method == "GET":
+        img_list = models.imagesurl.objects.all()
+        return render(request,"uploadformdata.html",{"img_list":img_list})
+    elif request.method == "POST":
+        username = request.POST.get("username",None)
+        #filesname = request.POST.get("files")
+        file = request.FILES.get("files")
+        import os
+        path = os.path.join('statics', 'upload', file.name)
+        f = open(path,'wb')
+        for chunk in file.chunks():
+            f.write(chunk)
+        f.close()
+        models.imagesurl.objects.create(filter=username,path=path)
+        ret = {'status':True,'path':path}
+        return HttpResponse(json.dumps(ret))
+#文件上传（iframe）
+def uploadiframe(request):
+    if request.method == "GET":
+        img_list = models.imagesurl.objects.all()
+        return render(request,"uploadiframe.html",{"img_list":img_list})
+    elif request.method == "POST":
+        username = request.POST.get("username",None)
+        file = request.FILES.get("files")
+        print(username,file)
+        import os
+        path = os.path.join('statics', 'upload', file.name)
+        f = open(path,'wb')
+        for chunk in file.chunks():
+            f.write(chunk)
+        f.close()
+        models.imagesurl.objects.create(filter=username,path=path)
+        ret = {'status':True,'path':path}
+        return HttpResponse(json.dumps(ret))
+
+
+
+
+
 
 
 

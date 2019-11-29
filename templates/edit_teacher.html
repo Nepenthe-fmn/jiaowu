@@ -24,7 +24,7 @@
             <a id="add_cla" style="font-size: 30px;cursor: pointer">+</a>
             <a id="delete_cla" style="font-size: 30px;cursor: pointer">-</a>
         </div>
-        <br><input type="submit" value="提交">
+        <br><input id="submit_form" type="submit" value="提交">
     </form>
 {% endblock %}
 {% block  js %}
@@ -32,7 +32,15 @@
         $(function(){
             bindadd_cla();
             binddelete_cla();
+            bindSubmit();
         });
+        function  bindSubmit() {
+            $("#submit_form").click(function(){
+                $('#sel').children().each(function(){
+                    $(this).prop("selected",true);
+                })
+            })
+        };
         function binddelete_cla(){
             $("#delete_cla").click(function(){
                 var options = $('#sel')[0].selectedOptions;

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <input type="button" onclick="jsonpRequest()" value="跨域请求" />
+    <script>
+        var TAG = null;
+        function jsonpRequest(){
+            TAG =document.createElement('script');
+            TAG.src = "https://www.cnblogs.com/wylshkjj/p/11949983.html";
+            document.head.appendChild(TAG);
+        };
+        function list(arg){
+            console.log(arg);
+            document.head.removeChild(TAG);
+        };
+    </script>
+</body>
+</html>

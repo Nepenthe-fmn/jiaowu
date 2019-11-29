@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block right %}
+    <form action="/upload/" method="post" enctype="multipart/form-data" style="margin-top: 60px;margin-left: 10%">
+        上传者：<input type="text" name="username" style="margin-top: 20px;"><br>
+        <input type="file" name="files" style="margin-top: 20px;"><br>
+        <input type="submit" value="提交" style="margin-top: 20px;">
+    </form>
+    <div class="show" style="margin-top: 30px;margin-left: 10%;overflow: hidden">
+        <h3>Form文件展示</h3>
+        {% for foo in img_list %}
+            <div class="files" style="float: left;margin-left: 8px;">
+                <p>filter:{{ foo.filter }}</p>
+                <p><img src="/{{ foo.path }}" style="width: 100px;height: 100px"/><p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "index.html" %}
+{% block right %}
+    <div class="upload" style="margin-top: 60px;margin-left: 10%">
+        上传者：<input type="text" name="username" style="margin-top: 20px;"><br>
+        <input type="file" id="upfile" style="margin-top: 20px;"><br>
+        <input type="button" value="XML提交" style="margin-top: 20px;" onclick="bindxml()">
+        <input type="button" value="ajax提交" style="margin-top: 20px;" onclick="bindjq()">
+    </div>
+   <div class="show" id="show" style="margin-top: 30px;margin-left: 10%;overflow: hidden">
+        <h3>FormData文件展示(xmlhttprequest和jquery)</h3>
+        {% for foo in img_list %}
+            <div class="files" id="images" style="float: left;margin-left: 8px;">
+                <p>filter:{{ foo.filter }}</p>
+                <p><img src="/{{ foo.path }}" style="width: 100px;height: 100px"/><p>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        function bindxml(){
+            var dic = new FormData();
+            {#console.log(user);#}
+            {#alert(user);#}
+            var user=document.getElementsByName('username')[0].value;
+            //alert(user);
+            //console.log(user);
+            dic.append('username',user);
+            dic.append('files',document.getElementById('upfile').files[0]);
+            var xml = new XMLHttpRequest();
+            xml.open('post','/uploadformdata/',true);
+            xml.onreadystatechange = function(){
+                if(xml.readyState == 4){
+                    var obj = JSON.parse(xml.responseText);
+                    if(obj.status){
+                        {#console.log(obj.path);#}
+                        var img = document.createElement('img');
+                        img.src = "/"+obj.path;
+                        img.style = "width: 100px;height: 100px";
+                        document.getElementById("images").appendChild(img);
+                    }
+                }
+            };
+            xml.send(dic);
+        };
+        function bindjq(){
+            var dic = new FormData();
+            var user=document.getElementsByName('username')[0].value;
+            dic.append('username',user);
+            dic.append('files',document.getElementById('upfile').files[0]);
+            $.ajax({
+                url:"/uploadformdata/",
+                type:"post",
+                processData:false,  //不需要取设置请求头
+                contentType:false, //不需要进行任何数据处理
+                data:dic,
+                dataType:"json",
+                success:function(ret){
+                    if(ret.status){
+                        var img = document.createElement('img');
+                        img.src = "/" +ret.path;
+                        img.style = "margin-left:10px;margin-top:52px;width: 100px;height: 100px";
+                        $("#show").append(img);
+                    }
+                }
+            })
+        };
+    </script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+

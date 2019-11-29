@@ -1,0 +1,54 @@
+{% extends "index.html" %}
+{% block right %}
+    <h2 style="margin-top: 60px;margin-left: 10%">基于iframe的文件上传（实现From文件上传）</h2>
+    <div class="upload" style="margin-top: 30px;margin-left: 10%">
+        <form action="/uploadiframe/" method="post" target="iframe_s" enctype="multipart/form-data">
+            <iframe id="iframe_s" name="iframe_s" onload="iframeurlsp()" style="display: none"></iframe>
+            上传者：<input type="text" name="username" style="margin-top: 20px;">
+            <input type="file" id="upfile" name="files" style="margin-top: 20px;">
+            <input type="submit" value="提交">
+        </form>
+    </div>
+    <div class="show" id="show" style="margin-top: 30px;margin-left: 10%;overflow: hidden">
+        <h3>FormData文件展示(xmlhttprequest和jquery)</h3>
+        {% for foo in img_list %}
+            <div class="files" id="images" style="float: left;margin-left: 8px;">
+                <p>filter:{{ foo.filter }}</p>
+                <p><img src="/{{ foo.path }}" style="width: 100px;height: 100px"/><p>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        function iframebutton(){
+            {#var urladdress = $("#upfile").val();#}
+            {#$("#urlsadd").attr("src",urladdress);#}
+        };
+        function iframeurlsp(){
+            console.log(1);
+            //获取iframe的内容
+            var str_json = $("iframe").contents().find("body").text(); //$("iframe").contents().find("body").html()
+            var obj = JSON.parse(str_json);
+            if (obj.status){
+                var img = document.createElement('img');
+                img.src = "/" + obj.path;
+                img.style = "margin-left:10px;margin-top:52px;width: 100px;height: 100px";
+                $('#show').append(img);
+            }
+        };
+    </script>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
