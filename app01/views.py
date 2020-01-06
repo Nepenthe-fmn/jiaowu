@@ -2,14 +2,12 @@ from django.shortcuts import render,redirect,HttpResponse
 from app01 import models
 import json
 # Create your views here.
-# 首页
-def index(req):
-    username=req.session.get("username")
-    if username:
-        return render(req,"index.html",{"username":username})
-    else:
-        return redirect("/login/")
+
 # 注销用户
+def logout(request):
+    request.session.clear()
+    return redirect("/login/")
+
 # 用户登录
 def login(req):
     message=""
@@ -20,13 +18,14 @@ def login(req):
         if userpwd:
             username = models.UserInfo.objects.filter(userid=userid).values("username")
             username = username[0]["username"]
-            req.session["is_login"]=True
-            req.session["username"]=username
+            req.session['is_login']=True
+            req.session['username']=username
             req = redirect("/index/")
             return req
         else:
             message="用户名或密码错误"
     return render(req,"login.html",{"msg":message})
+
 # 用户注册
 def register(req):
     if req.method == 'POST':
@@ -42,8 +41,29 @@ def register(req):
             password_answer=password_answer,
         )
     return render(req,"register.html")
+
+#权限管理（session）装饰器
+def auth(func):
+    def inner(request,*args,**kwargs):
+        is_login = request.session.get('is_login')
+        if is_login:
+            return func(request,*args,**kwargs)
+        else:
+            return redirect('/login/')
+    return inner
+
+# 首页
+@auth
+def index(req):
+    username=req.session.get("username")
+    if username:
+        return render(req,"index.html",{"username":username})
+    else:
+        return redirect("/login/")
+
 #班级管理
 from django.utils.safestring import mark_safe
+@auth
 def classes(req):
     # 获取班级列表信息
     if req.method == "GET":
@@ -89,7 +109,9 @@ def classes(req):
             return HttpResponse(json.dumps(del_dict))
         elif update_dict["success"] == "更新成功":
             return HttpResponse(json.dumps(update_dict))
+
 #学生管理
+@auth
 def students(req):
     if req.method == "GET":
         num_pages = req.GET.get("p",1)
@@ -186,7 +208,9 @@ class PagesHelp:
             self.pages_list.append('<a href="/%s/?p=%s">[下一页]</a>' % (self.page_name,pages))
         self.pages_list.append('<a href="/%s/?p=%s">[尾页]</a>' % (self.page_name,pages))
         return self.pages_list
+
 #教师管理
+@auth
 def teachers(req):
     if req.method == "GET":
         num_pages = req.GET.get("p",1)
@@ -215,7 +239,9 @@ def teachers(req):
                 }
         # print(result)
         return render(req,"teachers.html",{"teacher_list":result,"pages":mark_safe(pages_list)})
+
 #添加教师
+@auth
 def teacher_add(request):
     if request.method =="GET":
         cls_list = models.classes.objects.all()
@@ -226,6 +252,7 @@ def teacher_add(request):
         obj = models.teacher.objects.create(teachername=name)
         obj.cls.add(*cls)
         return render(request,"teacher_add.html")
+
 #编辑教师
 def edit_teacher(request,nid):
     if request.method == "GET":
@@ -246,7 +273,9 @@ def edit_teacher(request,nid):
         obj.save()#单条数据添加
         obj.cls.set(cls_list)#课程添加
         return redirect("/teachers/")
+
 #文件上传（Form表单）
+@auth
 def upload(request):
     if request.method == "GET":
         img_list = models.imagesurl.objects.all()
@@ -263,7 +292,9 @@ def upload(request):
         f.close()
         models.imagesurl.objects.create(filter=username,path=path)
         return redirect("/upload/")
+
 #文件上传（FormData）
+@auth
 def uploadformdata(request):
     if request.method == "GET":
         img_list = models.imagesurl.objects.all()
@@ -281,7 +312,9 @@ def uploadformdata(request):
         models.imagesurl.objects.create(filter=username,path=path)
         ret = {'status':True,'path':path}
         return HttpResponse(json.dumps(ret))
+
 #文件上传（iframe）
+@auth
 def uploadiframe(request):
     if request.method == "GET":
         img_list = models.imagesurl.objects.all()

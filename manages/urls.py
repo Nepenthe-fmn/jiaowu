@@ -28,5 +28,6 @@ urlpatterns = [
     re_path('edit_teacher-(\d+)/', views.edit_teacher),
     path('upload/',views.upload),
     path('uploadformdata/',views.uploadformdata),
-    path('uploadiframe/',views.uploadiframe)
+    path('uploadiframe/',views.uploadiframe),
+    path('logout/',views.logout)
 ]
