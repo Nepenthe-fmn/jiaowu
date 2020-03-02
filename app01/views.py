@@ -117,7 +117,7 @@ def students(req):
         num_pages = req.GET.get("p",1)
         piece_one = 10
         pages_list =[]
-        page_name = 'classes'
+        page_name = 'students'
         pieces=models.classes.objects.count()
         page_obj = PagesHelp(num_pages,pages_list,piece_one,pieces,page_name)
         pages_list = page_obj.pages()
