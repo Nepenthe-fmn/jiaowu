@@ -28,13 +28,36 @@
 8.  模态对话框是基于ajax的数据传输
 
 #### 项目展示
+
 1.  登录界面
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/200935_525174e8_2221473.jpeg "效果图7.JPG")
+
 2.  注册页面
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201019_1bbdd2f8_2221473.jpeg "效果图6.JPG")
+
 3.  主页
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201051_7ff52df2_2221473.jpeg "效果图5.JPG")
+
 4.  班级管理
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201232_0b866893_2221473.jpeg "效果图8.JPG")
+
     班级的增删改
 ![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201329_ceb57c29_2221473.jpeg "效果图9.JPG")
+
+5.  学员管理：由于功能相同使用的是班级表
+
+6.  教师管理
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201527_8ca6ec08_2221473.jpeg "效果图11.JPG")
+
+    添加教师
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201633_bc6cdc9c_2221473.jpeg "效果图12.JPG")
+
+    教师编辑
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201716_1aa33cc0_2221473.jpeg "效果图13.JPG")
+
+7.  文件上传
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201804_d1f26dba_2221473.jpeg "效果图14.JPG")
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201816_d573d482_2221473.jpeg "效果图15.JPG")
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0302/201825_d8aefb7d_2221473.jpeg "效果图16.JPG")
